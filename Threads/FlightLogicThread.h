@@ -28,10 +28,10 @@ extern MS5607 ms5607;
 extern TIM_HandleTypeDef htim2;
 
 // Flight detection parameters
-#define BOOST_ACCELERATION_THRESHOLD  100.0f        // m/s² - 3 consecutive samples to detect launch
+#define BOOST_ACCELERATION_THRESHOLD  5.0f          // g   - 3 consecutive samples to detect launch
 #define MIN_BOOST_TIME                3000          // ms  - motor must burn at least this long
 #define MAX_BOOST_TIME                15000         // ms  - failsafe: force COAST if IMU stuck in boost
-#define COAST_ACCELERATION_THRESHOLD  50.0f         // m/s² - burnout detection
+#define COAST_ACCELERATION_THRESHOLD  3.0f          // g   - burnout detection (ICM reads ~1g at rest/freefall, safe gap)
 #define COAST_TIME_LOCK               (20 * 1000)   // ms  - minimum coast time before checking apogee (covers mach transition)
 #define COAST_MAX_TIME                (60 * 1000)   // ms  - failsafe: force APOGEE if baro never shows drop
 #define MAX_ALTITUDE_DIFF             15.0f         // m   - altitude drop below max to start apogee confirm
