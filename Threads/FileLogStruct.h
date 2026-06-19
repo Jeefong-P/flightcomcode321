@@ -84,7 +84,6 @@ struct TelemetryBundle {
     // MS5607
     int16_t  temperature;
     int32_t  pressure;
-    float    altitude;
 
     // ICM-45686 accel (g)
     float accel_x;
