@@ -83,25 +83,25 @@ extern FlightState flightState;
 //   float    gyro_x,  gyro_y,  gyro_z   — dps
 
 struct __attribute__((packed)) UARTPacket {
-    char     callsign[7];
+    char     callsign[7];           // CALLSIGN + null terminator
     uint32_t tick;
-    int32_t  pressure;
-    int16_t  temperature;
-    float    altitude;
+    int32_t  pressure;              // Pa
+    int16_t  temperature;           // °C
+    float    filtered_altitude;     // m (Kalman-filtered)
     uint8_t  flightState;
-    float    accel_x, accel_y, accel_z;
-    float    gyro_x,  gyro_y,  gyro_z;
-};
+    float    accel_x, accel_y, accel_z;  // g
+    float    gyro_x,  gyro_y,  gyro_z;   // dps
+}; // 46 bytes packed
 
 void UARTThread(void *argument) {
     for (;;) {
         UARTPacket pkt = {};
         strncpy(pkt.callsign, CALLSIGN, sizeof(pkt.callsign));
-        pkt.tick        = HAL_GetTick();
-        pkt.pressure    = (int32_t)ms5607.getPressurePa();
-        pkt.temperature = (int16_t)ms5607.getTemperatureC();
-        pkt.altitude    = altitude;
-        pkt.flightState = (uint8_t)flightState;
+        pkt.tick               = HAL_GetTick();
+        pkt.pressure           = (int32_t)ms5607.getPressurePa();
+        pkt.temperature        = (int16_t)ms5607.getTemperatureC();
+        pkt.filtered_altitude  = altitude;
+        pkt.flightState        = (uint8_t)flightState;
         pkt.accel_x     = icm.accel_x / 2048.0f;
         pkt.accel_y     = icm.accel_y / 2048.0f;
         pkt.accel_z     = icm.accel_z / 2048.0f;
